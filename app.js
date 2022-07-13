@@ -17,7 +17,7 @@ const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rho
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 mongoose.connect(uriAtlas, {
@@ -26,7 +26,7 @@ mongoose.connect(uriAtlas, {
   dbName: "BlogDB"
 });
 
-const postSchema = new mongoose.Schema({
+const postSchema = {
   title: {
     type: String,
     required: [true, 'missing blog post title']
@@ -36,10 +36,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: [true, 'missing blog post content']
   }
-});
+};
 
 const Post = mongoose.model("Post", postSchema);
-const requestedPostId = req.params.postId;
+
 app.get("/", function(req, res){
 
   Post.find({}, function(err, posts){
@@ -71,33 +71,38 @@ app.post("/compose", async(req, res) => {
   });
 
   await post.save(function(err){
-
     if (!err){
- 
       res.redirect("/");
- 
     }
- 
   });
-
   res.redirect("/");
-
 });
 
-app.get("/posts/:postId", function(req, res){
-  const requestedTitle = _.lowerCase(req.params.postName);
+app.get("/posts/:postId", (req, res) => {
+  const requestedPostId = req.params.postId;
 
-  posts.forEach(function(post){
-    const requestedPostId = req.params.postId;
-    Post.findOne({_id: requestedPostId}, function(err, post){
-      res.render("post", {
-        title: post.title,
-        content: post.content
-      });
+  Post.findOne({_id: requestedPostId}, function(err, post){
+    res.render("post", {
+      title: post.title,
+      content: post.content
     });
   });
 
 });
+
+//   app.post("/delete", (req, res) => {
+//     // Get id of post to be deleted from request body (passed from post.ejs btn)
+//     const requestedId = req.body.deleteButton;
+//     // Search database for post and delete; redirect to home route
+//     Post.findByIdAndDelete({_id: requestedId}, (err) => {
+//         if (!err) {
+//             // console.log("Blog post successfully deleted!");
+//             res.redirect("/");
+//         } else {
+//             console.log(err);
+//         }
+//     });
+// });
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
