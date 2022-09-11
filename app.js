@@ -103,6 +103,11 @@ app.get("/posts/:postId", (req, res) => {
     });
 });
 
-app.listen(process.env.PORT || 3000, function() {
-  console.log("The server is up and running.")
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
+app.listen(port, function () {
+  console.log("Server started successfully.");
 });
