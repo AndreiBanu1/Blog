@@ -2,7 +2,8 @@
   "name": "blog-database",
   "version": "1.0.0",
   "engines": {
-    "node": "16.16.0"
+    "node": "16.16.0",
+    "npm": "8.12.1"
   },
   "description": "",
   "main": "app.js",
