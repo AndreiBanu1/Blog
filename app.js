@@ -1,13 +1,12 @@
 //jshint esversion:6
-
+require('dotenv').config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 
-const uriAtlas = "mongodb+srv://admin:admin@cluster0.vbbdz.mongodb.net/?retryWrites=true&w=majority";
-
+const uriAtlas = "mongodb+srv://"+process.env.DB_USER+":"+process.env.DB_PASSWORD+"@cluster0.vbbdz.mongodb.net/?retryWrites=true&w=majority";					
 
 const app = express();
 
@@ -104,6 +103,4 @@ app.get("/posts/:postId", (req, res) => {
 //     });
 // });
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
-});
+app.listen(process.env.PORT || 3000 );
