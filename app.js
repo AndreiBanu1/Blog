@@ -89,22 +89,20 @@ app.get("/posts/:postId", (req, res) => {
 
 });
 
-//   app.post("/delete", (req, res) => {
-//     // Get id of post to be deleted from request body (passed from post.ejs btn)
-//     const requestedId = req.body.deleteButton;
-//     // Search database for post and delete; redirect to home route
-//     Post.findByIdAndDelete({_id: requestedId}, (err) => {
-//         if (!err) {
-//             // console.log("Blog post successfully deleted!");
-//             res.redirect("/");
-//         } else {
-//             console.log(err);
-//         }
-//     });
-// });
+  app.post("/delete", (req, res) => {
+    // Get id of post to be deleted from request body (passed from post.ejs btn)
+    const requestedId = req.body.deleteButton;
+    // Search database for post and delete; redirect to home route
+    Post.findByIdAndDelete({_id: requestedId}, (err) => {
+        if (!err) {
+            // console.log("Blog post successfully deleted!");
+            res.redirect("/");
+        } else {
+            console.log(err);
+        }
+    });
+});
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`)
+app.listen(process.env.PORT || 3000, function() {
+  console.log("The server is up and running.")
 });
