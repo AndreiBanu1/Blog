@@ -1,13 +1,12 @@
 //jshint esversion:6
-
+require('dotenv').config()
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
 
-const uriAtlas = "mongodb+srv://admin:admin@cluster0.vbbdz.mongodb.net/?retryWrites=true&w=majority";
-
+const uriAtlas = "mongodb+srv://"+process.env.DB_USER+":"+process.env.DB_PASSWORD+"@cluster0.vbbdz.mongodb.net/?retryWrites=true&w=majority";					
 
 const app = express();
 
@@ -90,20 +89,23 @@ app.get("/posts/:postId", (req, res) => {
 
 });
 
-//   app.post("/delete", (req, res) => {
-//     // Get id of post to be deleted from request body (passed from post.ejs btn)
-//     const requestedId = req.body.deleteButton;
-//     // Search database for post and delete; redirect to home route
-//     Post.findByIdAndDelete({_id: requestedId}, (err) => {
-//         if (!err) {
-//             // console.log("Blog post successfully deleted!");
-//             res.redirect("/");
-//         } else {
-//             console.log(err);
-//         }
-//     });
-// });
+  app.post("/delete", (req, res) => {
+    // Get id of post to be deleted from request body (passed from post.ejs btn)
+    const requestedId = req.body.deleteButton;
+    // Search database for post and delete; redirect to home route
+    Post.findByIdAndDelete({_id: requestedId}, (err) => {
+        if (!err) {
+            // console.log("Blog post successfully deleted!");
+            res.redirect("/");
+        } else {
+            console.log(err);
+        }
+    });
+});
 
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+const host = '0.0.0.0';
+const port = process.env.PORT || 3000;
+
+app.listen(port, host, function() {
+  console.log("Server started on port 3000.");
 });
