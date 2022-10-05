@@ -88,12 +88,9 @@ app.get("/posts/:postId", (req, res) => {
 });
 
   app.post("/delete", (req, res) => {
-    // Get id of post to be deleted from request body (passed from post.ejs btn)
     const requestedId = req.body.deleteButton;
-    // Search database for post and delete; redirect to home route
     Post.findByIdAndDelete({_id: requestedId}, (err) => {
         if (!err) {
-            // console.log("Blog post successfully deleted!");
             res.redirect("/");
         } else {
             console.log(err);
